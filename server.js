@@ -5,7 +5,7 @@ import connectDB from "./DB/db.connection.js";
 import cookieParser from "cookie-parser";
 import authRoutes from "./Routes/Auth.routes.js";
 import jobRoutes from "./Routes/Job.routes.js";
-import applicationRoutes from "./Routes/Application.routes.js"
+import applicationRoutes from "./Routes/Application.routes.js";
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ connectDB)();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     credentials: true,
   })
 );
