@@ -12,23 +12,39 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-(app.listen(PORT, () => {
-  console.log("Server is running on port =", PORT);
-}),
-connectDB)();
+//  Allowed origins
+const allowedOrigins = [
+  "http://localhost:5173", // local Vite
+  "http://localhost:5174", // agar tu ye use kar raha hai
+  "https://hh-frontend-Deployment.vercel.app", // tera Vercel frontend URL
+];
 
-// Middleware setup
-
-app.use(cookieParser());
+//  CORS setup
 app.use(
   cors({
-    origin: "*",
-    credentials: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // cookies / JWT ke liye zaroori
   })
 );
+
+//  Middlewares
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
+//  Routes
 app.use("/auth", authRoutes);
 app.use("/job", jobRoutes);
 app.use("/application", applicationRoutes);
+
+//  Start Server + DB connect
+app.listen(PORT, () => {
+  console.log("Server is running on port =", PORT);
+  connectDB();
+});
