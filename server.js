@@ -14,9 +14,9 @@ const PORT = process.env.PORT || 3001;
 
 //  Allowed origins
 const allowedOrigins = [
-  "http://localhost:5173", // local Vite
-  "http://localhost:5174", // agar tu ye use kar raha hai
-  "https://hh-frontend-Deployment.vercel.app", // tera Vercel frontend URL
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://hh-frontend-Deployment.vercel.app",
 ];
 
 //  CORS setup
