@@ -39,6 +39,7 @@ const jobSchema = mongoose.Schema(
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      
     },
   },
   { timestamps: true }

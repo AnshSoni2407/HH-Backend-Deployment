@@ -9,10 +9,9 @@ import {
   deleteJob,
   updateJob,
 } from "../Controller/JobController.js";
-import { verifyToken } from "../Middlewares/Token.js";
 const router = express.Router();
 
-router.post("/create", verifyToken, create);
+router.post("/create", create);
 
 router.get("/fetch", fetch);
 
