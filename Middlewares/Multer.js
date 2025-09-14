@@ -38,16 +38,16 @@
   });
 
   // Set up Cloudinary storage
-  const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    return {
       folder: "HireHunt",
-    
-      resource_type: "raw",
-      public_id: (req, file) =>
-        file.fieldname + "-" + Math.random() + "-" + Date.now(),
-    },
-  });
+      resource_type: "raw", 
+      public_id: file.fieldname + "-" + Math.random() + "-" + Date.now(),
+    };
+  },
+});
 
   // Set up multer
   const upload = multer({
