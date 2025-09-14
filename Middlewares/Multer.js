@@ -42,11 +42,10 @@
     cloudinary: cloudinary,
     params: {
       folder: "HireHunt",
-      format: async (req, file) => "png", // optional, automatically detects by default
+    
+      resource_type: "raw",
       public_id: (req, file) =>
-        file.fieldname +
-        "-" +
-        Math.random() +  "-" +      Date.now(),
+        file.fieldname + "-" + Math.random() + "-" + Date.now(),
     },
   });
 
