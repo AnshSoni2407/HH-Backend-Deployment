@@ -161,3 +161,17 @@ res.status(200).json({message: 'Job updated successfully', updateJob})
 }
 
 }
+
+
+export const fetchManageJobs = async (req, res) => {
+
+  try {
+       console.log("fetched jobs for admin");
+    const jobs = await jobModel.find().populate("postedBy", "name email phone");
+ 
+    res.status(200).json({jobs:jobs, message: "All jobs fetched successfully for admin" });
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    res.status(500).json({ message: "Error while fetching all jobs for admin" });
+  }
+}
