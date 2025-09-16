@@ -2,7 +2,6 @@ import ApplicationModel from "../Model/Applications.model.js";
 import jobModel from "../Model/jobModel.js";
 import userModel from "../Model/user.model.js";
 
-
 export const create = async (req, res) => {
   const {
     jobTitle,
@@ -17,11 +16,7 @@ export const create = async (req, res) => {
   } = req.body;
 
   try {
-
-
-
     const CreatedJob = await jobModel.create(req.body);
-
 
     await userModel.findByIdAndUpdate(
       postedBy,
@@ -32,7 +27,6 @@ export const create = async (req, res) => {
     const populatedJob = await jobModel
       .findById(CreatedJob._id)
       .populate("postedBy");
-
 
     res
       .status(201)
@@ -113,65 +107,92 @@ export const fetchCreatedJobs = async (req, res) => {
       message: "Internal server error in fetching created jobs for users ",
     });
   }
-}
+};
 
 export const removeSavedJob = async (req, res) => {
   const { jobId, userId } = req.params;
 
   try {
-   const RestJobs =  await userModel.findByIdAndUpdate(userId, {
+    const RestJobs = await userModel.findByIdAndUpdate(userId, {
       $pull: { SavedJobs: jobId },
       new: true,
     });
-    res.status(200).json({RestJobs, message: "Job removed from saved jobs successfully"});
+    res
+      .status(200)
+      .json({ RestJobs, message: "Job removed from saved jobs successfully" });
   } catch (error) {
     console.error("Error removing job from saved jobs:", error);
-    res.status(500).json({ message: "Internal server error while removing jobs from saved jobs" });
+    res.status(500).json({
+      message: "Internal server error while removing jobs from saved jobs",
+    });
   }
 };
 
-
-export const deleteJob =async (req, res)=>{
-  const {jobId, userId} = req.params
+export const deleteJob = async (req, res) => {
+  const { jobId, userId } = req.params;
   try {
+    const deleteJob = await jobModel.findByIdAndDelete(jobId);
+    await ApplicationModel.deleteMany({ jobId });
 
-  const deleteJob = await jobModel.findByIdAndDelete(jobId);
-                    await ApplicationModel.deleteMany({ jobId });
-
-  if(!deleteJob){
-    return res.status(400).json('job not found, delete not possible', deleteJob)
-  }
-  res.status(200).json({message:'job deleted successfully'}, deleteJob)
-
+    if (!deleteJob) {
+      return res
+        .status(400)
+        .json("job not found, delete not possible", deleteJob);
+    }
+    res.status(200).json({ message: "job deleted successfully" }, deleteJob);
   } catch (error) {
-    console.log('error delete')
+    console.log("error delete");
   }
-}
+};
 
-export const updateJob = async (req, res) =>{
-  const {jobId} = req.params
-try {
-
- const updateJob = await jobModel.findByIdAndUpdate(jobId, req.body, {new:true}) 
-res.status(200).json({message: 'Job updated successfully', updateJob})
-
-} catch (error) {
-  console.log('error in updating job', error.message)
-  res.status(500).json({message: 'Internal server error while updating job'})
-}
-
-}
-
+export const updateJob = async (req, res) => {
+  const { jobId } = req.params;
+  try {
+    const updateJob = await jobModel.findByIdAndUpdate(jobId, req.body, {
+      new: true,
+    });
+    res.status(200).json({ message: "Job updated successfully", updateJob });
+  } catch (error) {
+    console.log("error in updating job", error.message);
+    res
+      .status(500)
+      .json({ message: "Internal server error while updating job" });
+  }
+};
 
 export const fetchManageJobs = async (req, res) => {
-
   try {
-       console.log("fetched jobs for admin");
+    console.log("fetched jobs for admin");
     const jobs = await jobModel.find().populate("postedBy", "name email phone");
- 
-    res.status(200).json({jobs:jobs, message: "All jobs fetched successfully for admin" });
+
+    res
+      .status(200)
+      .json({ jobs: jobs, message: "All jobs fetched successfully for admin" });
   } catch (error) {
     console.error("Error fetching jobs:", error);
-    res.status(500).json({ message: "Error while fetching all jobs for admin" });
+    res
+      .status(500)
+      .json({ message: "Error while fetching all jobs for admin" });
   }
-}
+};
+
+export const deleteJobByAdmin = async (req, res) => {
+  const { jobId } = req.params;
+
+  try {
+     const deletedJob = await jobModel.findByIdAndDelete(jobId);
+     if (!deletedJob) {
+       return res
+         .status(400)
+         .json({ message: "Job not found, delete not possible" });
+     }
+     await ApplicationModel.deleteMany({ jobId });
+     res
+       .status(200)
+       .json({ message: "Job deleted successfully by admin", deletedJob });
+  } catch (error) {
+    console.error("Error deleting job by admin:", error);
+    res.status(500).json({ message: "Internal server error while deleting job by admin" });
+  }
+ 
+};

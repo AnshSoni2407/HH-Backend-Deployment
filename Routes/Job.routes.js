@@ -9,6 +9,7 @@ import {
   deleteJob,
   updateJob,
   fetchManageJobs,
+  deleteJobByAdmin,
 } from "../Controller/JobController.js";
 const router = express.Router();
 
@@ -29,5 +30,7 @@ router.delete("/deleteJob/:jobId/:userId", deleteJob);
 router.put("/update/:jobId", updateJob);
 
 router.get("/fetch/all/jobs", fetchManageJobs);
+
+router.delete("/delete/byAdmin/:jobId", deleteJobByAdmin);
 
 export default router;
