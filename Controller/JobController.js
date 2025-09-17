@@ -1,3 +1,4 @@
+import { toNamespacedPath } from "path";
 import ApplicationModel from "../Model/Applications.model.js";
 import jobModel from "../Model/jobModel.js";
 import userModel from "../Model/user.model.js";
@@ -163,7 +164,7 @@ export const updateJob = async (req, res) => {
 export const fetchManageJobs = async (req, res) => {
   try {
     console.log("fetched jobs for admin");
-    const jobs = await jobModel.find().populate("postedBy", "name email phone");
+    const jobs = await jobModel.find().populate("postedBy");
 
     res
       .status(200)
@@ -180,19 +181,35 @@ export const deleteJobByAdmin = async (req, res) => {
   const { jobId } = req.params;
 
   try {
-     const deletedJob = await jobModel.findByIdAndDelete(jobId);
-     if (!deletedJob) {
-       return res
-         .status(400)
-         .json({ message: "Job not found, delete not possible" });
-     }
-     await ApplicationModel.deleteMany({ jobId });
-     res
-       .status(200)
-       .json({ message: "Job deleted successfully by admin", deletedJob });
+    const deletedJob = await jobModel.findByIdAndDelete(jobId);
+    if (!deletedJob) {
+      return res
+        .status(400)
+        .json({ message: "Job not found, delete not possible" });
+    }
+    await ApplicationModel.deleteMany({ jobId });
+    res
+      .status(200)
+      .json({ message: "Job deleted successfully by admin", deletedJob });
   } catch (error) {
     console.error("Error deleting job by admin:", error);
-    res.status(500).json({ message: "Internal server error while deleting job by admin" });
+    res
+      .status(500)
+      .json({ message: "Internal server error while deleting job by admin" });
   }
- 
+};
+
+export const editJobByAdmin = async () => {
+  const { jobID } = req.params;
+
+  console.log(jobID);
+
+  try {
+    const edittedJob = await jobModel.findByIdAndUpdate(jobID, req.body);
+
+    res.status(200).json({ message: "Job editted successfully", edittedJob });
+  } catch (error) {
+    console.log("Error while editing job from Admin", error.message);
+    res.status(400).json({ message: "Error while editing job from Admin" });
+  }
 };
