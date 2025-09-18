@@ -1,4 +1,4 @@
-import userModel from "../Model/user.model";
+import userModel from "../Model/user.model.js";
 
 export const fetchAllUsersAdmin = async (req, res) => {
   try {
@@ -25,6 +25,3 @@ export const deleteJobByAdmin = async (req, res) => {
     res.status(400).json({ message: "Error while deleting job by Admin" });
   }
 };
-
-
-    
