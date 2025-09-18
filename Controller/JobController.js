@@ -199,13 +199,13 @@ export const deleteJobByAdmin = async (req, res) => {
   }
 };
 
-export const editJobByAdmin = async () => {
+export const editJobByAdmin = async (req, res) => {
   const { jobID } = req.params;
 
   console.log(jobID);
 
   try {
-    const edittedJob = await jobModel.findByIdAndUpdate(jobID, req.body);
+    const edittedJob = await jobModel.findByIdAndUpdate(jobID, req.body,{new: true});
 
     res.status(200).json({ message: "Job editted successfully", edittedJob });
   } catch (error) {
