@@ -12,16 +12,29 @@ export const fetchAllUsersAdmin = async (req, res) => {
   }
 };
 
-export const deleteJobByAdmin = async (req, res) => {
+export const deleteUserByAdmin = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const deleteJob = await userModel.findByIdAndDelete(userId);
+    const deleteUser = await userModel.findByIdAndDelete(userId);
 
     res
       .status(200)
-      .json({ message: "Job deleted successfully by Admin", deleteJob });
+      .json({ message: "user deleted successfully by Admin", deleteUser });
   } catch (error) {
-    res.status(400).json({ message: "Error while deleting job by Admin" });
+    res.status(400).json({ message: "Error while deleting user by Admin" });
+  }
+};
+
+
+export const updateUserByAdmin = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const updatedUser = await userModel.findByIdAndUpdate(userId, req.body, {
+      new: true,
+    });
+    res.status(200).json({ message: "User updated", updatedUser });
+  } catch (error) {
+    res.status(400).json({ message: "Error updating user" });
   }
 };
