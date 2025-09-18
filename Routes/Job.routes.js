@@ -34,6 +34,6 @@ router.get("/fetch/all/jobs", fetchManageJobs);
 
 router.delete("/delete/byAdmin/:jobId", deleteJobByAdmin);
 
-router.patch("/admin/edit/job/:jobID", editJobByAdmin);
+router.patch("/admin/delete/jobs/:userId", editJobByAdmin);
 
 export default router;

@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./Routes/Auth.routes.js";
 import jobRoutes from "./Routes/Job.routes.js";
 import applicationRoutes from "./Routes/Application.routes.js";
+import userRoutes from './Routes/User.routes.js'
 
 dotenv.config();
 
@@ -42,8 +43,9 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/auth", authRoutes);
 app.use("/job", jobRoutes);
 app.use("/application", applicationRoutes);
+app.use("/user", userRoutes)
 
-// Start Server + DB connect
+
 app.listen(PORT, () => {
   console.log("Server is running on port =", PORT);
   connectDB();
