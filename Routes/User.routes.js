@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.get('/admin/fetch/jobs', fetchAllUsersAdmin)
+router.get('/admin/fetch/users', fetchAllUsersAdmin)
 
 router.delete("/admin/delete/jobs/:userId", deleteJobByAdmin);
 

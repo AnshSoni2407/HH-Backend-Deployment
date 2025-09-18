@@ -2,11 +2,11 @@ import userModel from "../Model/user.model.js";
 
 export const fetchAllUsersAdmin = async (req, res) => {
   try {
-    const res = await userModel.find();
+    const allUsers = await userModel.find();
 
     res
       .status(200)
-      .json({ message: "user fetched succesfully for Admin", res });
+      .json({ message: "user fetched succesfully for Admin", allUsers });
   } catch (error) {
     res.status(200).json({ message: "error while fetching users for Admin" });
   }
